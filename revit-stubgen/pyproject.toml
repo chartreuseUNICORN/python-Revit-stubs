@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "revit-stubgen"
+version = "0.1.0"
+description = "Generate typed Python stubs (.pyi) for the Revit API from RevitAPI.dll metadata + RevitAPI.xml docs, and wire them into VS Code."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["dnfile>=0.14"]
+
+[project.scripts]
+revitstubs = "revitstubs.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["revitstubs*"]
