@@ -1,6 +1,6 @@
 """revitstubs command line.
 
-    revitstubs list
+    revitstubs list [--json]
     revitstubs generate 2024 2025 [--out revit-stubs] [--vscode .]
     revitstubs generate --dll path/to/RevitAPI.dll --dll path/to/RevitAPIUI.dll --tag 2025 --out revit-stubs
     revitstubs vscode 2025 [--out revit-stubs] [--workspace .]
@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import sys
 import time
@@ -64,7 +65,15 @@ def cmd_list(args) -> int:
     installs = list_installs(Path(args.revit_root) if args.revit_root else None)
     if not installs:
         _log("No Revit installs found (set --revit-root or REVIT_ROOT).")
+        if args.json:
+            print("[]")
         return 1
+    if args.json:
+        print(json.dumps([
+            {"year": i.year, "root": str(i.root), "dotnet_core": i.dotnet_core,
+             "optional_assemblies": [n for n in OPTIONAL_ASSEMBLIES if (i.root / n).exists()]}
+            for i in installs]))
+        return 0
     for i in installs:
         extra = [n for n in OPTIONAL_ASSEMBLIES if (i.root / n).exists()]
         print(f"Revit {i.year}  {i.root}  (.NET {'8' if i.dotnet_core else 'Framework'})"
@@ -128,6 +137,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     p = sub.add_parser("list", help="show detected Revit installs")
     p.add_argument("--revit-root", help=r"folder containing 'Revit 20XX' dirs (default C:\Program Files\Autodesk)")
+    p.add_argument("--json", action="store_true", help="machine-readable output (one JSON array)")
     p.set_defaults(fn=cmd_list)
 
     p = sub.add_parser("generate", help="generate stubs for one or more Revit years (or explicit DLLs)")
