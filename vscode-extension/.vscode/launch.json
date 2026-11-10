@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "npm: watch"
+    },
+    {
+      // Single-folder integration suite. Runs against the fixture in place, so it may leave
+      // edits in src/test/fixtures/workspace/.vscode/settings.json; `npm test` uses a temp copy.
+      "name": "Extension Tests",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionDevelopmentPath=${workspaceFolder}/src/test/fixtures/python-settings-schema",
+        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index",
+        "--disable-extensions",
+        "${workspaceFolder}/src/test/fixtures/workspace"
+      ],
+      "env": {
+        "REVIT_STUBS_TEST_WORKSPACE": "${workspaceFolder}/src/test/fixtures/workspace",
+        "REVIT_STUBS_TEST_MODE": "single"
+      },
+      "outFiles": ["${workspaceFolder}/out/**/*.js", "${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "npm: build:tests"
+    }
+  ]
+}

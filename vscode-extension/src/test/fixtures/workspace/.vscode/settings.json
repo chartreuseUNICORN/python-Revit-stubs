@@ -1,0 +1,6 @@
+{
+    // keep this comment
+    "editor.tabSize": 2,
+    "python.analysis.typeCheckingMode": "strict",
+    "revitStubs.languageServer": "pylance"
+}
