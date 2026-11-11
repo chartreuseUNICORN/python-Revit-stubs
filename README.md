@@ -157,6 +157,24 @@ Disable with `--no-clr` (unresolved types become `Any`).
 * `revitstubs list` / `generate <year>` look under `C:\Program Files\Autodesk\Revit <year>`.
   Override with `--revit-root` or `REVIT_ROOT`.
 
+## VS Code extension
+
+`vscode-extension/` contains a VS Code extension (`revit-stubs`) that wraps this tool.
+Beyond what `revitstubs vscode` does, it adds:
+
+* Quick Setup: private venv, offline install of the bundled generator, Revit detection, generation as a VS Code task.
+* A status bar item and picker to switch Revit years, with workspace-local and shared per-user stub stores.
+* Pylance and Pyright support, and a command to undo the configuration.
+
+Build and install the VSIX for now:
+
+```bash
+cd vscode-extension && npm install && npm run package
+code --install-extension revit-stubs-0.1.0.vsix
+```
+
+See [vscode-extension/README.md](vscode-extension/README.md).
+
 ## Development
 
 ```bash

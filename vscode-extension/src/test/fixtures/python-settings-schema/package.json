@@ -1,0 +1,23 @@
+{
+  "name": "python-settings-schema",
+  "displayName": "Python settings schema (test fixture)",
+  "description": "Declarative stand-in for Pylance's settings contributions. VS Code refuses to write unregistered keys, and the integration tests run with --disable-extensions.",
+  "version": "0.0.0",
+  "publisher": "revit-stubs-test",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "contributes": {
+    "configuration": {
+      "title": "Python (test schema)",
+      "properties": {
+        "python.languageServer": { "type": "string", "default": "Default", "scope": "window" },
+        "python.analysis.stubPath": { "type": "string", "default": "typings", "scope": "resource" },
+        "python.analysis.extraPaths": { "type": "array", "items": { "type": "string" }, "default": [], "scope": "resource" },
+        "python.analysis.typeCheckingMode": { "type": "string", "default": "off", "scope": "resource" },
+        "python.analysis.useLibraryCodeForTypes": { "type": "boolean", "default": true, "scope": "resource" },
+        "python.analysis.diagnosticSeverityOverrides": { "type": "object", "default": {}, "scope": "resource" }
+      }
+    }
+  }
+}

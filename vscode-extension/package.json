@@ -1,0 +1,164 @@
+{
+  "name": "revit-stubs",
+  "displayName": "Revit Stubs",
+  "description": "Multi-version Revit API IntelliSense for Python: switch Revit years, generate stubs, configure Pylance/Pyright.",
+  "version": "0.1.0",
+  "publisher": "revit-stubgen",
+  "license": "MIT",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chartreuseUNICORN/python-Revit-stubs.git",
+    "directory": "vscode-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/chartreuseUNICORN/python-Revit-stubs/issues"
+  },
+  "homepage": "https://github.com/chartreuseUNICORN/python-Revit-stubs/tree/main/vscode-extension#readme",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "revit",
+    "pyrevit",
+    "ironpython",
+    "pythonnet",
+    "stubs",
+    "pylance",
+    "pyright"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:python"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "revitStubs.openSettings",
+        "title": "Open Settings",
+        "category": "Revit Stubs"
+      },
+      {
+        "command": "revitStubs.selectVersion",
+        "title": "Select Revit Version",
+        "category": "Revit Stubs"
+      },
+      {
+        "command": "revitStubs.generate",
+        "title": "Generate Stubs for Revit Year(s)",
+        "category": "Revit Stubs"
+      },
+      {
+        "command": "revitStubs.quickSetup",
+        "title": "Quick Setup (install tool, generate, configure)",
+        "category": "Revit Stubs"
+      },
+      {
+        "command": "revitStubs.clearConfiguration",
+        "title": "Remove Revit Stub Configuration",
+        "category": "Revit Stubs"
+      }
+    ],
+    "configuration": {
+      "title": "Revit Stubs",
+      "properties": {
+        "revitStubs.currentVersion": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "markdownDescription": "The Revit year (for example `2025`) whose stubs are currently active."
+        },
+        "revitStubs.workspaceStubsRoot": {
+          "type": "string",
+          "default": "revit-stubs",
+          "scope": "resource",
+          "markdownDescription": "Folder, relative to the workspace folder (or absolute), that contains one stub folder per Revit year."
+        },
+        "revitStubs.globalStubsRoot": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "markdownDescription": "Machine-wide folder containing per-year stub folders; empty means `%LOCALAPPDATA%\\revit-stubs` on Windows and `~/.local/share/revit-stubs` elsewhere."
+        },
+        "revitStubs.languageServer": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "pylance",
+            "pyright"
+          ],
+          "enumDescriptions": [
+            "Detect the installed Python language server automatically.",
+            "Configure Pylance (ms-python.vscode-pylance).",
+            "Configure Pyright (ms-pyright.pyright)."
+          ],
+          "default": "auto",
+          "scope": "resource",
+          "markdownDescription": "Which Python language server the extension configures to use the Revit stubs."
+        },
+        "revitStubs.revitRoot": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "markdownDescription": "Folder containing the `Revit <year>` installs; empty means the `REVIT_ROOT` environment variable or `C:\\Program Files\\Autodesk`."
+        },
+        "revitStubs.generate.extraArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "scope": "resource",
+          "markdownDescription": "Extra command-line arguments passed to the stub generator."
+        }
+      }
+    },
+    "taskDefinitions": [
+      {
+        "type": "revitStubs",
+        "required": [
+          "years"
+        ],
+        "properties": {
+          "years": {
+            "type": "string",
+            "description": "Comma-separated Revit years"
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run bundle:wheel && npm run compile -- --production",
+    "compile": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "pretest": "npm run check-types && npm run lint",
+    "build:tests": "tsc -p ./",
+    "test:unit": "npm run build:tests && mocha \"out/test/unit/**/*.test.js\"",
+    "test": "npm run compile && npm run build:tests && node out/test/runTest.js",
+    "package": "vsce package",
+    "bundle:wheel": "node scripts/build-wheel.mjs"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.93.0",
+    "@types/node": "^22.0.0",
+    "@types/mocha": "^10.0.0",
+    "typescript": "^5.6.0",
+    "esbuild": "^0.28.0",
+    "mocha": "^11.0.0",
+    "eslint": "^9.0.0",
+    "typescript-eslint": "^8.0.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.1.0"
+  },
+  "dependencies": {
+    "@vscode/python-extension": "^1.0.6"
+  }
+}
